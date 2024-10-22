@@ -1,0 +1,107 @@
+class PostreManager:
+    def __init__(self):
+
+        self.postres = {}
+
+    def agregar_postre(self, nombre, ingredientes):
+        if nombre in self.postres:
+            print(f"El postre '{nombre}' ya existe.")
+        else:
+            self.postres[nombre] = sorted(ingredientes)
+            print(f"Postre '{nombre}' agregado con éxito.")
+
+    def eliminar_postre(self, nombre):
+        if nombre in self.postres:
+            del self.postres[nombre]
+            print(f"Postre '{nombre}' eliminado con éxito.")
+        else:
+            print(f"El postre '{nombre}' no existe.")
+
+    def listar_ingredientes(self, nombre):
+        if nombre in self.postres:
+            print(f"Ingredientes de '{nombre}': {', '.join(self.postres[nombre])}")
+        else:
+            print(f"El postre '{nombre}' no existe.")
+
+    def agregar_ingrediente(self, nombre, ingrediente):
+        if nombre in self.postres:
+            if ingrediente not in self.postres[nombre]:
+                self.postres[nombre].append(ingrediente)
+                self.postres[nombre].sort()  
+                print(f"Ingrediente '{ingrediente}' agregado a '{nombre}'.")
+            else:
+                print(f"El ingrediente '{ingrediente}' ya está en '{nombre}'.")
+        else:
+            print(f"El postre '{nombre}' no existe.")
+
+    def eliminar_ingrediente(self, nombre, ingrediente):
+        if nombre in self.postres:
+            if ingrediente in self.postres[nombre]:
+                self.postres[nombre].remove(ingrediente)
+                print(f"Ingrediente '{ingrediente}' eliminado de '{nombre}'.")
+            else:
+                print(f"El ingrediente '{ingrediente}' no está en '{nombre}'.")
+        else:
+            print(f"El postre '{nombre}' no existe.")
+
+    def eliminar_repetidos(self):
+
+        unique_postres = {}
+        for nombre, ingredientes in self.postres.items():
+            if nombre not in unique_postres:
+                unique_postres[nombre] = sorted(ingredientes)
+
+        self.postres = unique_postres
+        print("Se han eliminado los postres repetidos.")
+
+
+def main():
+    manager = PostreManager()
+
+    while True:
+        print("\nOpciones:")
+        print("1. Agregar un postre")
+        print("2. Eliminar un postre")
+        print("3. Listar ingredientes de un postre")
+        print("4. Agregar un ingrediente a un postre")
+        print("5. Eliminar un ingrediente de un postre")
+        print("6. Eliminar postres repetidos")
+        print("7. Salir")
+
+        opcion = input("Selecciona una opción (1-7): ")
+
+        if opcion == "1":
+            nombre = input("Nombre del postre: ")
+            ingredientes = input("Lista de ingredientes (separados por comas): ").split(',')
+            manager.agregar_postre(nombre.strip(), [i.strip() for i in ingredientes])
+
+        elif opcion == "2":
+            nombre = input("Nombre del postre a eliminar: ")
+            manager.eliminar_postre(nombre.strip())
+
+        elif opcion == "3":
+            nombre = input("Nombre del postre para listar ingredientes: ")
+            manager.listar_ingredientes(nombre.strip())
+
+        elif opcion == "4":
+            nombre = input("Nombre del postre: ")
+            ingrediente = input("Ingrediente a agregar: ")
+            manager.agregar_ingrediente(nombre.strip(), ingrediente.strip())
+
+        elif opcion == "5":
+            nombre = input("Nombre del postre: ")
+            ingrediente = input("Ingrediente a eliminar: ")
+            manager.eliminar_ingrediente(nombre.strip(), ingrediente.strip())
+
+        elif opcion == "6":
+            manager.eliminar_repetidos()
+
+        elif opcion == "7":
+            print("Saliendo...")
+            break
+
+        else:
+            print("Opción no válida, por favor intenta de nuevo.")
+
+if __name__ == "__main__":
+    main()
